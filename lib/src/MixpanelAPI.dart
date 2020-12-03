@@ -36,7 +36,7 @@ class MixpanelAPI {
       properties['optOutTrackingDefault'] = optOutTrackingDefault;
 
     String name =
-    await _channel.invokeMethod<String>('getInstance', properties);
+        await _channel.invokeMethod<String>('getInstance', properties);
 
     return new MixpanelAPI(name);
   }
@@ -60,7 +60,7 @@ class MixpanelAPI {
     _channel.invokeMethod<void>('track',
         <String, dynamic>{'eventName': eventName, 'properties': properties});
   }
-  
+
   ///
   /// Returns an unmodifiable map that contains the device description properties that will be sent to Mixpanel.
   ///
@@ -121,6 +121,10 @@ class MixpanelAPI {
   /// for more information.
   void reset() {
     _channel.invokeMethod<void>('reset');
+  }
+
+  void setSuperProperties(Map<String, dynamic> superProperties) {
+    _channel.invokeMethod("superProperties", superProperties);
   }
 }
 
