@@ -173,7 +173,15 @@ public class SwiftFlutuateMixpanelPlugin: NSObject, FlutterPlugin {
         case "removePushDeviceToken":
             removePushToken(arguments: peopleArguments)
         case "set":
-            toMixpanelProperties(properties: peopleArguments) { mixPanelProperties in
+            var copy = peopleArguments
+            if copy != nil, let email = peopleArguments?["email"] as? String {
+                copy?.removeValue(forKey: "email")
+                copy?["$email"] = email
+            }
+            if let id = peopleArguments?["id"] as? String {
+                Mixpanel.mainInstance().identify(distinctId: id)
+            }
+            toMixpanelProperties(properties: copy) { mixPanelProperties in
                 Mixpanel.mainInstance().people.set(properties: mixPanelProperties)
             }
         case "setOnce":
